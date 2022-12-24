@@ -44,19 +44,16 @@ func (s *TestSuite) SetupTest() {
 
 func (s *TestSuite) TestCreateOneSuccess() {
 	// creat mock data for test
-	rows := sqlmock.NewRows([]string{"id", "name", "price"}).
-		AddRow(mockProduct.ID, mockProduct.Name, mockProduct.Price)
-
 	s.mock.ExpectBegin()
-	s.mock.ExpectQuery("SELECT * FROM cyclo.products").
-		WithArgs(mockProduct.ID).
-		WillReturnRows(rows)
+	s.mock.ExpectExec("INSERT INTO cyclo.products").
+		WithArgs(mockProduct.ID, mockProduct.Name, mockProduct.Price).
+		WillReturnResult(sqlmock.NewResult(1, 1))
 
 	s.mock.ExpectCommit()
 
 	repo := New(s.db)
 	// execute test
-	_, err := repo.GetOneById(context.Background(), mockProduct.ID)
+	_, err := repo.CreateOne(context.Background(), mockProduct)
 	if err != nil {
 		fmt.Errorf("error was not expected while updating stats: %s", err)
 	}
@@ -164,6 +161,43 @@ func (s *TestSuite) TestGetManyOneSuccess() {
 	}
 
 }
+
+// func (s *TestSuite) TestGetManyWithFilterSuccess() {
+// 	// creat mock data for test
+// 	brandRows := sqlmock.NewRows([]string{"id", "name"}).
+// 		AddRow(1, "Prada").
+// 		AddRow(2, "Zara")
+
+// 	productRows := sqlmock.NewRows([]string{"id", "name", "price", "brand_id"}).
+// 		AddRow(1, "Product 1", 1, 1).
+// 		AddRow(2, "Product 2", 2, 2).
+// 		AddRow(3, "Product 3", 3, 1).
+// 		AddRow(4, "Product 4", 4, 2)
+
+// 		s.mock.ExpectExec("INSERT INTO cyclo.products").
+// 		WithArgs(2, 3).
+// 		WillReturnError(fmt.Errorf("some error"))
+
+// 	s.mock.ExpectBegin()
+// 	s.mock.ExpectQuery("SELECT * FROM cyclo.products").
+// 		WillReturnRows(rows)
+
+// 	s.mock.ExpectCommit()
+
+// 	repo := New(s.db)
+// 	// execute test
+// 	products, err := repo.GetMany(context.Background())
+// 	if err != nil {
+// 		fmt.Errorf("error was not expected while updating stats: %s", err)
+// 	}
+// 	fmt.Println(products)
+
+// 	// we make sure that all expectations were met
+// 	if err := s.mock.ExpectationsWereMet(); err != nil {
+// 		fmt.Errorf("there were unfulfilled expectations: %s", err)
+// 	}
+
+// }
 
 // func (s *TestSuite) TestGetManyOneFailed() {
 // }

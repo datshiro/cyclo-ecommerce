@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/datshiro/cyclo-ecommerce/internal/domain"
+	"github.com/datshiro/cyclo-ecommerce/internal/mock/mock_domain"
 	"github.com/datshiro/cyclo-ecommerce/internal/models"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
@@ -27,7 +28,7 @@ type test struct {
 type TestSuite struct {
 	suite.Suite
 	uc   domain.ProductUsecase
-	repo *domain.MockProductRepo
+	repo *mock_domain.MockProductRepo
 }
 
 var (
@@ -45,7 +46,7 @@ func (s *TestSuite) SetupTest() {
 
 	mockCtl := gomock.NewController(s.T())
 
-	repo := domain.NewMockProductRepo(mockCtl)
+	repo := mock_domain.NewMockProductRepo(mockCtl)
 	uc := New(repo)
 	defer mockCtl.Finish()
 
@@ -59,9 +60,9 @@ func (s *TestSuite) TestGetOne() {
 		{
 			name: "empty result",
 			mock: func() {
-				s.repo.EXPECT().GetOneById(context.Background(), 1).Return(nil, nil)
+				s.repo.EXPECT().GetOneById(context.Background(), 1).Return(new(models.Product), nil)
 			},
-			res:  []*models.Product(nil),
+			res:  new(models.Product),
 			err:  nil,
 			args: []int{1},
 		},
@@ -77,9 +78,9 @@ func (s *TestSuite) TestGetOne() {
 		{
 			name: "result with error",
 			mock: func() {
-				s.repo.EXPECT().GetOneById(context.Background(), 0).Return(nil, errInternalServErr)
+				s.repo.EXPECT().GetOneById(context.Background(), 0).Return(new(models.Product), errInternalServErr)
 			},
-			res:  []*models.Product(nil),
+			res:  new(models.Product),
 			err:  errInternalServErr,
 			args: []int{0},
 		},
@@ -94,7 +95,7 @@ func (s *TestSuite) TestGetOne() {
 		res, err := s.uc.GetOneById(context.Background(), tc.args[0])
 
 		t := s.T()
-		require.Equal(t, res, tc.res)
+		require.Equal(t, tc.res, res)
 		require.ErrorIs(t, err, tc.err)
 	}
 }

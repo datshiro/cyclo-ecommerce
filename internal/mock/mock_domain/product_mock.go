@@ -2,7 +2,7 @@
 // Source: internal/domain/product.go
 
 // Package mock_domain is a generated GoMock package.
-package domain
+package mock_domain
 
 import (
 	context "context"
@@ -10,6 +10,7 @@ import (
 
 	models "github.com/datshiro/cyclo-ecommerce/internal/models"
 	gomock "github.com/golang/mock/gomock"
+	qm "github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 
 // MockProductRepo is a mock of ProductRepo interface.
@@ -35,6 +36,20 @@ func (m *MockProductRepo) EXPECT() *MockProductRepoMockRecorder {
 	return m.recorder
 }
 
+// CreateMany mocks base method.
+func (m *MockProductRepo) CreateMany(ctx context.Context, products models.ProductSlice) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateMany", ctx, products)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateMany indicates an expected call of CreateMany.
+func (mr *MockProductRepoMockRecorder) CreateMany(ctx, products interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMany", reflect.TypeOf((*MockProductRepo)(nil).CreateMany), ctx, products)
+}
+
 // CreateOne mocks base method.
 func (m *MockProductRepo) CreateOne(ctx context.Context, product *models.Product) (*models.Product, error) {
 	m.ctrl.T.Helper()
@@ -51,18 +66,23 @@ func (mr *MockProductRepoMockRecorder) CreateOne(ctx, product interface{}) *gomo
 }
 
 // GetMany mocks base method.
-func (m *MockProductRepo) GetMany(ctx context.Context) (models.ProductSlice, error) {
+func (m *MockProductRepo) GetMany(ctx context.Context, mods ...qm.QueryMod) (models.ProductSlice, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetMany", ctx)
+	varargs := []interface{}{ctx}
+	for _, a := range mods {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetMany", varargs...)
 	ret0, _ := ret[0].(models.ProductSlice)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetMany indicates an expected call of GetMany.
-func (mr *MockProductRepoMockRecorder) GetMany(ctx interface{}) *gomock.Call {
+func (mr *MockProductRepoMockRecorder) GetMany(ctx interface{}, mods ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMany", reflect.TypeOf((*MockProductRepo)(nil).GetMany), ctx)
+	varargs := append([]interface{}{ctx}, mods...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMany", reflect.TypeOf((*MockProductRepo)(nil).GetMany), varargs...)
 }
 
 // GetOneById mocks base method.
@@ -103,6 +123,20 @@ func (m *MockProductUsecase) EXPECT() *MockProductUsecaseMockRecorder {
 	return m.recorder
 }
 
+// CreateMany mocks base method.
+func (m *MockProductUsecase) CreateMany(ctx context.Context, products models.ProductSlice) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateMany", ctx, products)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateMany indicates an expected call of CreateMany.
+func (mr *MockProductUsecaseMockRecorder) CreateMany(ctx, products interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateMany", reflect.TypeOf((*MockProductUsecase)(nil).CreateMany), ctx, products)
+}
+
 // CreateOne mocks base method.
 func (m *MockProductUsecase) CreateOne(ctx context.Context, product *models.Product) (*models.Product, error) {
 	m.ctrl.T.Helper()
@@ -119,18 +153,38 @@ func (mr *MockProductUsecaseMockRecorder) CreateOne(ctx, product interface{}) *g
 }
 
 // GetMany mocks base method.
-func (m *MockProductUsecase) GetMany(ctx context.Context) (models.ProductSlice, error) {
+func (m *MockProductUsecase) GetMany(ctx context.Context, mods ...qm.QueryMod) (models.ProductSlice, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetMany", ctx)
+	varargs := []interface{}{ctx}
+	for _, a := range mods {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetMany", varargs...)
 	ret0, _ := ret[0].(models.ProductSlice)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetMany indicates an expected call of GetMany.
-func (mr *MockProductUsecaseMockRecorder) GetMany(ctx interface{}) *gomock.Call {
+func (mr *MockProductUsecaseMockRecorder) GetMany(ctx interface{}, mods ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMany", reflect.TypeOf((*MockProductUsecase)(nil).GetMany), ctx)
+	varargs := append([]interface{}{ctx}, mods...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMany", reflect.TypeOf((*MockProductUsecase)(nil).GetMany), varargs...)
+}
+
+// GetManyWithFilters mocks base method.
+func (m *MockProductUsecase) GetManyWithFilters(ctx context.Context, brandIDs []int, minPrice, maxPrice float64) (models.ProductSlice, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetManyWithFilters", ctx, brandIDs, minPrice, maxPrice)
+	ret0, _ := ret[0].(models.ProductSlice)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetManyWithFilters indicates an expected call of GetManyWithFilters.
+func (mr *MockProductUsecaseMockRecorder) GetManyWithFilters(ctx, brandIDs, minPrice, maxPrice interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetManyWithFilters", reflect.TypeOf((*MockProductUsecase)(nil).GetManyWithFilters), ctx, brandIDs, minPrice, maxPrice)
 }
 
 // GetOneById mocks base method.

@@ -1,6 +1,9 @@
 run:
 	go run cmd/server/main.go
 
+test:
+	go test -v -race ./internal/... --cover
+
 setup: ## Perform setup script, install necessary plugins/tools
 	@scripts/setup.sh
 
