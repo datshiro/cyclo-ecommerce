@@ -4,6 +4,9 @@ run:
 test:
 	go test -v -race ./internal/... --cover
 
+seeder:
+	go run cmd/seeder/seeder.go
+
 setup: ## Perform setup script, install necessary plugins/tools
 	@scripts/setup.sh
 

@@ -40,6 +40,10 @@ func (s *Server) configMiddleware() {
 	s.configLoggerMiddleware()
 	s.Echo.Use(middleware.Logger())
 	s.Echo.Use(middleware.Recover())
+	s.Echo.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+	}))
 }
 
 func (s *Server) configLoggerMiddleware() {

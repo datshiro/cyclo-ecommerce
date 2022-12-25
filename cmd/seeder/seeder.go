@@ -70,7 +70,6 @@ func SeedProducts(ctx context.Context, dbc *sql.DB) error {
 	products := models.ProductSlice{}
 	for i := 1; i <= 100; i++ {
 		brandId := (i % (len(BrandList) - 1)) + 1
-		fmt.Println(brandId)
 		products = append(products, &models.Product{
 			ID:      i,
 			Name:    fmt.Sprintf("Product %d", i),
